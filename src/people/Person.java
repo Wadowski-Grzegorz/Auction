@@ -5,16 +5,29 @@ import items.Item;
 import java.util.ArrayList;
 
 
-abstract class Person {
+public abstract class Person {
 
-    private static int id_counter = 0;
-    private int id;
+    protected static int id_counter = 0;
 
-    private double budget;
+    protected int id;
 
-    private ArrayList<Item> wantedItems;
-    private ArrayList<Item> boughtItems;
+    protected double budget;
+
+    protected ArrayList<Item> wantedItems;
+    protected ArrayList<Item> boughtItems;
 
     abstract void chooseAuction();
+
+    public Person(int wantedCount, double budgetSet){
+        id_counter++;
+
+        wantedItems = new ArrayList<>();
+        boughtItems = new ArrayList<>();
+        for(int i = 0; i < wantedCount; i++){
+            wantedItems.add(new Item());
+        }
+
+        budget = budgetSet;
+    }
 
 }

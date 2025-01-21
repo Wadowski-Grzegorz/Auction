@@ -6,18 +6,23 @@ import observers.ObservedSubject;
 import java.util.ArrayList;
 
 public class Auction {
-    private String name;
     private ArrayList<Item> items;
-    private ObservedSubject publisher;
 
 
-    public Auction(){
-
+    public Auction(int numberOfItems){
+        items = new ArrayList<>();
+        for(int i = 0; i < numberOfItems; i++){
+            items.add(new Item());
+        }
     }
 
     public void start(){
 
     }
 
+
+    public ArrayList<Item> getItems() {
+        return items;
+    }
 }
 

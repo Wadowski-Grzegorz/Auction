@@ -23,15 +23,15 @@ public class ObservedSubject {
         observers.clear();
     }
 
-    public void notifyObserver(Observer ob, Notification context){
-        ob.update(context);
-    }
-
-    public void notifyAllObservers(Notification context){
-        for(Observer ob: observers){
-            notifyObserver(ob, context);
-        }
-    }
+//    public void notifyObserver(Observer ob, Notification context){
+//        ob.update(context);
+//    }
+//
+//    public void notifyAllObservers(Notification context){
+//        for(Observer ob: observers){
+//            notifyObserver(ob, context);
+//        }
+//    }
 
 
     public int getSize(){

@@ -2,7 +2,6 @@ package items;
 
 import java.util.Random;
 
-//todo: zaokrąglanie do 2 miejsc po przecinku
 
 public class Item {
     String name;
@@ -12,17 +11,24 @@ public class Item {
     double realValue;
 
     public Item(ItemType type, double value) {
+        // specific item
         Random random = new Random();
+
         this.type = type;
-        this.value = value;
+
+        this.value = Math.round(value * 100.0) / 100.0;
+
         if(type.getChance() < random.nextDouble()){
             this.realValue = type.getRatio() * value;
         } else{
             this.realValue = value;
         }
+
+        this.realValue = Math.round(this.realValue * 100.0) / 100.0;
     }
 
     public Item(){
+        // random item
         Random random = new Random();
 
         ItemType[] values = ItemType.values();
@@ -30,12 +36,15 @@ public class Item {
         this.type = values[randomIndex];
 
         this.value = random.nextDouble() * 190 + 10;
+        this.value = Math.round(this.value * 100.0) / 100.0;
 
         if(type.getChance() > random.nextDouble()){
             this.realValue = type.getRatio() * value;
         } else{
             this.realValue = value;
         }
+
+        this.realValue = Math.round(this.realValue * 100.0) / 100.0;
     }
 
     @Override

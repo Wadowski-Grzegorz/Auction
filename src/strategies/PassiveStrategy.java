@@ -1,4 +1,8 @@
 package strategies;
 
-public class PassiveStrategy {
+public class PassiveStrategy implements IStrategy {
+    @Override
+    public void execute() {
+
+    }
 }

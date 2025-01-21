@@ -1,4 +1,8 @@
 package strategies;
 
-public class BalancedStrategy {
+public class BalancedStrategy implements IStrategy {
+    @Override
+    public void execute() {
+
+    }
 }
