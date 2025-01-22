@@ -1,15 +1,15 @@
 package auction;
 
-import observers.ObservedSubject;
 import people.Person;
 
 import java.util.ArrayList;
 
 public class AuctionHouse {
-    // creates auction and feeds with participants
+    // creates auctions and feed with participants
+    // one auction at time in order
 
     protected ArrayList<Auction> auctions;
-    private ObservedSubject publisher;
+
     public AuctionHouse(){
         auctions = new ArrayList<>();
     }

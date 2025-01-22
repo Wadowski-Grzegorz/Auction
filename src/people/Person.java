@@ -1,11 +1,13 @@
 package people;
 
 import items.Item;
+import observers.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
-public abstract class Person {
+public abstract class Person implements Observer, ObservedSubject {
 
     protected static int id_counter = 0;
 
@@ -15,6 +17,7 @@ public abstract class Person {
 
     protected ArrayList<Item> wantedItems;
     protected ArrayList<Item> boughtItems;
+    protected Observer observer;
 
     abstract void chooseAuction();
 
@@ -30,4 +33,27 @@ public abstract class Person {
         budget = budgetSet;
     }
 
+    @Override
+    public void addObserver(Observer ob) {
+        observer = ob;
+    }
+
+    @Override
+    public void notifyObserver(Observer ob, Notification notify, HashMap<String, Object> map) {
+        ob.update(notify, map);
+    }
+
+    @Override
+    public void notifyAllObservers(Notification notify, HashMap<String, Object> map) {
+        if(observer != null){
+            observer.update(notify, map);
+        }
+    }
+
+    @Override
+    public void removeObserver(Observer ob) {
+        observer = null;
+    }
+
+    }
 }

@@ -1,5 +1,9 @@
 package people;
 
+import observers.Notification;
+
+import java.util.HashMap;
+
 public class User extends Person{
 
     public User(){
@@ -11,5 +15,32 @@ public class User extends Person{
     @Override
     void chooseAuction() {
 
+    }
+
+    @Override
+    public void update(Notification notify, HashMap<String, Object> map) {
+        // check notification type and act adequately
+        switch(notify){
+            case Notification.START:
+                // check what item
+                // tell user auction started
+                break;
+
+            case Notification.END:
+                // tell user its end
+                break;
+
+            case Notification.OFFER:
+                // tell user new offer
+                break;
+
+            case Notification.WIN:
+                // set item as yours
+                // tell user he won
+                break;
+
+            default:
+                // nothing
+        }
     }
 }
