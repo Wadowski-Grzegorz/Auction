@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 // todo: po zakończeniu aukcji program robi dodatkowe okrążenie,
-// todo: zbadaj czy to nie powoduje błędów
-// zastanów się nad id, obecnie jeśli obserwator będzie z innej klasy
-// niż Person, to nie zapewniam mu unikalnego id
+//  zbadaj czy to nie powoduje błędów.
+//  Zastanów się nad id, obecnie jeśli obserwator będzie z innej klasy
+//  niż Person, to nie zapewniam mu unikalnego id.
+//  Dodanie do strategi odwołanie do pierwotneej ceny.
+
 
 public class Main {
     public static void main(String[] args){

@@ -14,12 +14,14 @@ public class Participant extends Person {
     // strategy always must be set
 
     IStrategy strategy;
+    double firstOffer;
 
     public Participant(){
         super(3, 2500);
 
         this.id = id_counter;
         this.strategy = new DummyStrategy();
+        this.firstOffer = 0.0;
 
 //        System.out.println("Person, my id is " + this.id);
     }
@@ -39,7 +41,8 @@ public class Participant extends Person {
     @Override
     public void step() {
         // execute strategy
-        strategy.execute();
+        boolean isMine = id == currId;
+        strategy.execute(budget, currOffer, firstOffer, isMine);
     }
 
     private boolean isWanted(Item item){
@@ -75,7 +78,9 @@ public class Participant extends Person {
 
                 // read from a map
                 Item mapItem = (Item) map.get("item");
-                currOffer = (Double) map.get("price");
+                Double mapPrice = (Double) map.get("price");
+                currOffer = mapPrice;
+                firstOffer = mapPrice;
 
                 // set strategy
                 Random rand = new Random();
@@ -116,6 +121,7 @@ public class Participant extends Person {
                 // unset strategy
                 strategy = new DummyStrategy();
                 currOffer = 0.0;
+                firstOffer = 0.0;
                 currId = -1;
                 break;
 
