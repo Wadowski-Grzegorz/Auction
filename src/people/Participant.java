@@ -3,10 +3,7 @@ package people;
 
 import items.Item;
 import observers.Notification;
-import strategies.AggresiveStrategy;
-import strategies.BalancedStrategy;
-import strategies.DummyStrategy;
-import strategies.IStrategy;
+import strategies.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,6 +83,12 @@ public class Participant extends Person {
                     if(rand.nextDouble() < 0.8)
                         strategy = new AggresiveStrategy();
                     else{
+                        strategy = new BalancedStrategy();
+                    }
+                }else{
+                    if(rand.nextDouble() < 0.8){
+                        strategy = new PassiveStrategy();
+                    }else{
                         strategy = new BalancedStrategy();
                     }
                 }
