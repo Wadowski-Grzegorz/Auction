@@ -21,11 +21,11 @@ public class Log {
         System.out.println(mess);
     }
 
-    public static int getId(){
+    public int getId(){
         return ++id;
     }
 
-    public static int checkId(){
+    public int checkId(){
         return id;
     }
 

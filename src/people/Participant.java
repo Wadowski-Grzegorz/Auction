@@ -17,12 +17,14 @@ public class Participant extends Person {
     IStrategy strategy;
     double firstOffer;
 
-    public Participant(int id){
-        super(3, 2500);
+    protected double currOffer;
 
-        this.id = id;
+    public Participant(int id, int wantedCount, double budgetSet){
+        super(id, wantedCount, budgetSet);
+
         this.strategy = new DummyStrategy();
         this.firstOffer = 0.0;
+        this.currOffer = 0.0;
 
 //        System.out.println("Person, my id is " + this.id);
     }
@@ -45,15 +47,15 @@ public class Participant extends Person {
         boolean isMine = id == currId;
         double newOffer = strategy.execute(budget, currOffer, firstOffer, isMine);
 
-        if(newOffer == 0.0){
+        if(newOffer != 0.0){
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("price", newOffer);
+            map.put("id", id);
+
+            notifyObserver(observer, Notification.OFFER, map);
+        }else{
             return;
         }
-
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("price", newOffer);
-        map.put("id", id);
-
-        notifyObserver(observer, Notification.OFFER, map);
     }
 
     private boolean isWanted(Item item){
@@ -64,21 +66,6 @@ public class Participant extends Person {
         }
 
         return false;
-    }
-
-    void boughtItem(Item item, double price){
-
-        budget -= price;
-        budget = Math.round(budget * 100.0) / 100.0;
-        boughtItems.add(item);
-
-        // remove item from wanted items
-        for(Item wItem: wantedItems){
-            if(wItem.getType() == item.getType()){
-                wantedItems.remove(wItem);
-                break;
-            }
-        }
     }
 
     @Override
@@ -148,28 +135,6 @@ public class Participant extends Person {
         }
     }
 
-    @Override
-    public void log() {
-        String wantedStr = getString(wantedItems);
-        String boughtStr = getString(boughtItems);
-
-        logger.mess(this.toString(),
-                "Wanted items: " + wantedStr
-                + ".\n\tBought items: " + boughtStr
-                + ".\n\tBalance: " + budget
-        );
-    }
-
-    public String getString(ArrayList<Item> items){
-        StringBuilder str = new StringBuilder();
-        for(Item i : items){
-            str.append(i.toString()).append(", ");
-        }
-        if (str.length() > 2) {
-            str.setLength(str.length() - 2);
-        }
-        return str.toString();
-    }
 
     @Override
     public String toString() {

@@ -8,6 +8,7 @@ import observers.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 
 public abstract class Person implements Observer, ObservedSubject {
@@ -15,16 +16,15 @@ public abstract class Person implements Observer, ObservedSubject {
     protected Log logger;
 
     protected int id;
+    protected int currId;
 
     protected double budget;
-    protected double currOffer;
-    protected int currId;
 
     protected ArrayList<Item> wantedItems;
     protected ArrayList<Item> boughtItems;
     protected Observer observer;
 
-    public Person(int wantedCount, double budgetSet){
+    public Person(int setid, int wantedCount, double budgetSet){
         // create person with random wanted items
 
         logger = Log.getInstance();
@@ -34,8 +34,10 @@ public abstract class Person implements Observer, ObservedSubject {
             wantedItems.add(new Item());
         }
 
+        id = setid;
         budget = budgetSet;
-        currOffer = 0.0;
+        observer = null;
+        currId = -1;
     }
 
     public abstract boolean wantAuction(LinkedList<Item> items);
@@ -84,5 +86,40 @@ public abstract class Person implements Observer, ObservedSubject {
         return observer;
     }
 
-    public abstract void log();
+    public String getString(List<Item> items){
+        StringBuilder str = new StringBuilder();
+        for(Item i : items){
+            str.append(i.toString()).append(", ");
+        }
+        if (str.length() > 2) {
+            str.setLength(str.length() - 2);
+        }
+        return str.toString();
+    }
+
+    public void log() {
+        String wantedStr = getString(wantedItems);
+        String boughtStr = getString(boughtItems);
+
+        logger.mess(this.toString(),
+                "Wanted items: " + wantedStr
+                        + ".\n\tBought items: " + boughtStr
+                        + ".\n\tBalance: " + budget
+        );
+    }
+
+    protected void boughtItem(Item item, double price){
+
+        budget -= price;
+        budget = Math.round(budget * 100.0) / 100.0;
+        boughtItems.add(item);
+
+        // remove item from wanted items
+        for(Item wItem: wantedItems){
+            if(wItem.getType() == item.getType()){
+                wantedItems.remove(wItem);
+                break;
+            }
+        }
+    }
 }
