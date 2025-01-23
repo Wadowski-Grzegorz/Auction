@@ -9,9 +9,9 @@ import java.util.LinkedList;
 
 public class User extends Person{
 
-    public User(){
+    public User(int id){
         super(3, 2500);
-        this.id = id_counter;
+        this.id = id;
         System.out.println("User, my id is " + this.id);
     }
 
@@ -51,5 +51,10 @@ public class User extends Person{
             default:
                 // nothing
         }
+    }
+
+    @Override
+    public void log() {
+        return;
     }
 }

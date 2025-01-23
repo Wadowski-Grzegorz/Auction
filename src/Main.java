@@ -1,5 +1,6 @@
 import auction.Auction;
 import auction.AuctionHouse;
+import communication.Log;
 import items.Item;
 import observers.Observer;
 import people.Participant;
@@ -9,15 +10,13 @@ import people.User;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-// todo: po zakończeniu aukcji program robi dodatkowe okrążenie,
-//  zbadaj czy to nie powoduje błędów.
-//  Zastanów się nad id, obecnie jeśli obserwator będzie z innej klasy
-//  niż Person, to nie zapewniam mu unikalnego id.
+// todo:
 
-// check if observer is set for person
 
 
 public class Main {
+
+    static Log logger = Log.getInstance();
     public static void main(String[] args){
 
         // Create auctionHouse and auctions
@@ -27,24 +26,17 @@ public class Main {
         // Create people
         ArrayList<Person> people = new ArrayList<>();
         for(int i = 0; i < 3; i++){
-            people.add(new Participant());
+            people.add(new Participant(logger.getId()));
         }
 //        people.add(new User());
 
         // Ask people if they want to participate to auctions
         auctionHouse.feedAuctions(people);
 
-
-//        // List items at auction
-//        LinkedList<Auction> auctions = auctionHouse.getAuctions();
-//        for(Auction auc: auctions){
-//            LinkedList<Item> items = auc.getItems();
-//            for(Item it: items){
-//                System.out.println(it);
-//            }
-//            System.out.println("----------");
-//        }
-
+        logger.cleanMess("Before auctions:");
+        for(Person p: people){
+            p.log();
+        }
 
         // loop
         // end when auctionHouse say(?)
@@ -55,6 +47,11 @@ public class Main {
             for(Person p : people){
                 p.step();
             }
+        }
+
+        logger.cleanMess("After auctions:");
+        for(Person p: people){
+            p.log();
         }
     }
 }

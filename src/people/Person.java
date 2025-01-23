@@ -1,6 +1,7 @@
 package people;
 
 import auction.Auction;
+import communication.Log;
 import items.Item;
 import observers.*;
 
@@ -11,7 +12,7 @@ import java.util.LinkedList;
 
 public abstract class Person implements Observer, ObservedSubject {
 
-    protected static int id_counter = 0;
+    protected Log logger;
 
     protected int id;
 
@@ -25,8 +26,8 @@ public abstract class Person implements Observer, ObservedSubject {
 
     public Person(int wantedCount, double budgetSet){
         // create person with random wanted items
-        id_counter++;
 
+        logger = Log.getInstance();
         wantedItems = new ArrayList<>();
         boughtItems = new ArrayList<>();
         for(int i = 0; i < wantedCount; i++){
@@ -82,4 +83,6 @@ public abstract class Person implements Observer, ObservedSubject {
     public Observer getObserver() {
         return observer;
     }
+
+    public abstract void log();
 }

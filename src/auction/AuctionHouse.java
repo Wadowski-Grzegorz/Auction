@@ -1,5 +1,6 @@
 package auction;
 
+import communication.Log;
 import people.Person;
 
 import java.util.ArrayList;
@@ -11,13 +12,15 @@ public class AuctionHouse {
 
     protected LinkedList<Auction> auctions;
     boolean openAuction;
+    Log logger;
 
     public AuctionHouse(){
         auctions = new LinkedList<>();
+        openAuction = false;
+        logger = Log.getInstance();
     }
 
     public void createAuctions(int numberOfAuctions, int numberOfItems){
-        openAuction = false;
         for(int i = 0; i < numberOfAuctions; i++){
             auctions.add(new Auction(numberOfItems));
         }

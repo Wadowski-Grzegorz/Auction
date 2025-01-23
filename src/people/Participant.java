@@ -17,10 +17,10 @@ public class Participant extends Person {
     IStrategy strategy;
     double firstOffer;
 
-    public Participant(){
+    public Participant(int id){
         super(3, 2500);
 
-        this.id = id_counter;
+        this.id = id;
         this.strategy = new DummyStrategy();
         this.firstOffer = 0.0;
 
@@ -67,8 +67,9 @@ public class Participant extends Person {
     }
 
     void boughtItem(Item item, double price){
-        budget -= price;
 
+        budget -= price;
+        budget = Math.round(budget * 100.0) / 100.0;
         boughtItems.add(item);
 
         // remove item from wanted items
@@ -87,7 +88,6 @@ public class Participant extends Person {
             case Notification.START_AUCTION:
                 // prepare for new auction
                 Auction mapAuction = (Auction) map.get("auction");
-                mapAuction.print();
                 addObserver(mapAuction);
                 break;
 
@@ -146,5 +146,33 @@ public class Participant extends Person {
             default:
                 // nothing
         }
+    }
+
+    @Override
+    public void log() {
+        String wantedStr = getString(wantedItems);
+        String boughtStr = getString(boughtItems);
+
+        logger.mess(this.toString(),
+                "Wanted items: " + wantedStr
+                + ".\n\tBought items: " + boughtStr
+                + ".\n\tBalance: " + budget
+        );
+    }
+
+    public String getString(ArrayList<Item> items){
+        StringBuilder str = new StringBuilder();
+        for(Item i : items){
+            str.append(i.toString()).append(", ");
+        }
+        if (str.length() > 2) {
+            str.setLength(str.length() - 2);
+        }
+        return str.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "Participant " + id;
     }
 }

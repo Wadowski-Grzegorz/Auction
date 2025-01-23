@@ -1,5 +1,6 @@
 package auction;
 
+import communication.Log;
 import items.Item;
 import observers.*;
 
@@ -11,6 +12,8 @@ public class Auction implements ObservedSubject, Observer {
     private LinkedList<Item> items;
     private ArrayList<Observer> observers;
 
+    private Log logger;
+
     private double currentPrice;
     private int currentId;
     private boolean priceChanged;
@@ -18,6 +21,7 @@ public class Auction implements ObservedSubject, Observer {
 
 
     public Auction(int numberOfItems){
+        logger = Log.getInstance();
         items = new LinkedList<>();
         for(int i = 0; i < numberOfItems; i++){
             items.add(new Item());
@@ -26,6 +30,7 @@ public class Auction implements ObservedSubject, Observer {
     }
 
     public int step(){
+//        logger.mess(this.toString(), "step");
         // open an auction
         // announce current item
         if(itemChosen){
@@ -36,6 +41,7 @@ public class Auction implements ObservedSubject, Observer {
             startSell();
         }else{
             // no items, end auction
+            logger.cleanMess("----------AUCTION ENDED----------");
             return 1;
         }
         return 0;
@@ -51,15 +57,26 @@ public class Auction implements ObservedSubject, Observer {
             notifyAllObservers(Notification.OFFER, map);
         }else{
             // sell item
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("item", items.getFirst());
-            map.put("price", currentPrice);
-            map.put("id", currentId);
-
-            notifyAllObservers(Notification.WIN, map);
-
+            if(currentId > 0){
+                sellItem();
+            }else{
+                logger.mess(this.toString(),
+                        "no one bought an item");
+            }
             endSell();
         }
+    }
+
+    private void sellItem(){
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("item", items.getFirst());
+        map.put("price", currentPrice);
+        map.put("id", currentId);
+
+        notifyAllObservers(Notification.WIN, map);
+        logger.mess(this.toString(),
+                "SOLD to " + currentId
+                        + " for " + currentPrice);
     }
 
     private void endSell(){
@@ -86,9 +103,12 @@ public class Auction implements ObservedSubject, Observer {
         HashMap<String, Object> map = new HashMap<>();
         map.put("item", currItem);
         map.put("price", currentPrice);
-        System.out.println("from auction currentPrice: " + currentPrice);
 
         notifyAllObservers(Notification.START, map);
+        logger.cleanMess("");
+        logger.mess(this.toString(),
+                "START selling " + currItem.getType()
+                        + " for " + currentPrice);
     }
 
     public void activate(){
@@ -136,9 +156,11 @@ public class Auction implements ObservedSubject, Observer {
                 double newOffer = (Double) map.get("price");
                 int id = (Integer) map.get("id");
                 if(newOffer > currentPrice && currentId != id){
-                    currentPrice = newOffer;
+                    currentPrice = Math.round(newOffer * 100.0) / 100.0;
                     currentId = id;
                     priceChanged = true;
+                    logger.mess(this.toString(),
+                            "new offer from " + id + ". " + newOffer);
                 }
                 break;
 
@@ -147,8 +169,10 @@ public class Auction implements ObservedSubject, Observer {
         }
     }
 
-    public void print(){
-        System.out.println("auction started");
+
+    @Override
+    public String toString() {
+        return "Auction";
     }
 }
 
