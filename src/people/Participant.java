@@ -1,6 +1,7 @@
 package people;
 
 
+import auction.Auction;
 import items.Item;
 import observers.Notification;
 import strategies.*;
@@ -42,7 +43,17 @@ public class Participant extends Person {
     public void step() {
         // execute strategy
         boolean isMine = id == currId;
-        strategy.execute(budget, currOffer, firstOffer, isMine);
+        double newOffer = strategy.execute(budget, currOffer, firstOffer, isMine);
+
+        if(newOffer == 0.0){
+            return;
+        }
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("price", newOffer);
+        map.put("id", id);
+
+        notifyObserver(observer, Notification.OFFER, map);
     }
 
     private boolean isWanted(Item item){
@@ -73,6 +84,13 @@ public class Participant extends Person {
     public void update(Notification notify, HashMap<String, Object> map) {
         // check notification type and act adequately
         switch (notify) {
+            case Notification.START_AUCTION:
+                // prepare for new auction
+                Auction mapAuction = (Auction) map.get("auction");
+                mapAuction.print();
+                addObserver(mapAuction);
+                break;
+
             case Notification.START:
                 currId = -1;
 

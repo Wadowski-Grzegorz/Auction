@@ -2,7 +2,7 @@ package strategies;
 
 public interface IStrategy {
 
-    // strategies need currPrice, budget, if currId != myId
+    // strategies return 0 if they don't want to raise
     public double execute(double budget,
                           double currOffer,
                           double firstOffer,

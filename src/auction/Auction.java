@@ -44,6 +44,7 @@ public class Auction implements ObservedSubject, Observer {
     private void continueSell(){
         if(priceChanged){
             // announce new price
+            priceChanged = false;
             HashMap<String, Object> map = new HashMap<>();
             map.put("price", currentPrice);
             map.put("id", currentId);
@@ -75,7 +76,7 @@ public class Auction implements ObservedSubject, Observer {
     private void startSell(){
         // choose an item and set values
         Item currItem = items.getFirst();
-        currentPrice = currItem.getValue() * 0.4;
+        currentPrice = Math.round(currItem.getValue() * 0.4 * 100.0) / 100.0;
 
         priceChanged = false;
         itemChosen = true;
@@ -85,8 +86,17 @@ public class Auction implements ObservedSubject, Observer {
         HashMap<String, Object> map = new HashMap<>();
         map.put("item", currItem);
         map.put("price", currentPrice);
+        System.out.println("from auction currentPrice: " + currentPrice);
 
         notifyAllObservers(Notification.START, map);
+    }
+
+    public void activate(){
+        // say you're opening auction
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("auction", this);
+
+        notifyAllObservers(Notification.START_AUCTION, map);
     }
 
     public ArrayList<Observer> getObservers() {
@@ -123,15 +133,22 @@ public class Auction implements ObservedSubject, Observer {
     public void update(Notification notify, HashMap<String, Object> map) {
         switch(notify){
             case Notification.OFFER:
-                // check notification type
-                // check if price is higher,
-                // if is take id and set new price
-                // change bool saying price is changed
+                double newOffer = (Double) map.get("price");
+                int id = (Integer) map.get("id");
+                if(newOffer > currentPrice && currentId != id){
+                    currentPrice = newOffer;
+                    currentId = id;
+                    priceChanged = true;
+                }
                 break;
 
             default:
                 // nothing
         }
+    }
+
+    public void print(){
+        System.out.println("auction started");
     }
 }
 

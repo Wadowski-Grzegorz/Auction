@@ -13,7 +13,8 @@ import java.util.LinkedList;
 //  zbadaj czy to nie powoduje błędów.
 //  Zastanów się nad id, obecnie jeśli obserwator będzie z innej klasy
 //  niż Person, to nie zapewniam mu unikalnego id.
-//  Dodanie do strategi odwołanie do pierwotneej ceny.
+
+// check if observer is set for person
 
 
 public class Main {
@@ -47,12 +48,13 @@ public class Main {
 
         // loop
         // end when auctionHouse say(?)
-//        while(true){
-//            auctionHouse.step();
-//
-//            for(Person p : people){
-//                p.step();
-//            }
-//        }
+        int result = 0;
+        while(result == 0){
+            result = auctionHouse.step();
+
+            for(Person p : people){
+                p.step();
+            }
+        }
     }
 }
