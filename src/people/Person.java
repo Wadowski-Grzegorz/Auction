@@ -1,10 +1,12 @@
 package people;
 
+import auction.Auction;
 import items.Item;
 import observers.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 
 public abstract class Person implements Observer, ObservedSubject {
@@ -14,14 +16,15 @@ public abstract class Person implements Observer, ObservedSubject {
     protected int id;
 
     protected double budget;
+    protected double currOffer;
+    protected int currId;
 
     protected ArrayList<Item> wantedItems;
     protected ArrayList<Item> boughtItems;
     protected Observer observer;
 
-    abstract void chooseAuction();
-
     public Person(int wantedCount, double budgetSet){
+        // create person with random wanted items
         id_counter++;
 
         wantedItems = new ArrayList<>();
@@ -31,7 +34,12 @@ public abstract class Person implements Observer, ObservedSubject {
         }
 
         budget = budgetSet;
+        currOffer = 0.0;
     }
+
+    public abstract boolean wantAuction(LinkedList<Item> items);
+
+    public abstract void step();
 
     @Override
     public void addObserver(Observer ob) {
@@ -55,5 +63,23 @@ public abstract class Person implements Observer, ObservedSubject {
         observer = null;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public double getBudget() {
+        return budget;
+    }
+
+    public ArrayList<Item> getWantedItems() {
+        return wantedItems;
+    }
+
+    public ArrayList<Item> getBoughtItems() {
+        return boughtItems;
+    }
+
+    public Observer getObserver() {
+        return observer;
     }
 }

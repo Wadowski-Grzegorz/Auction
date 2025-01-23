@@ -1,8 +1,11 @@
 package people;
 
+import items.Item;
 import observers.Notification;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class User extends Person{
 
@@ -13,8 +16,14 @@ public class User extends Person{
     }
 
     @Override
-    void chooseAuction() {
+    public boolean wantAuction(LinkedList<Item> items){
+        // ask user if he wants to be at auction
+        return false;
+    }
 
+    @Override
+    public void step() {
+        // user input
     }
 
     @Override

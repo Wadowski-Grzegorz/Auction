@@ -4,7 +4,6 @@ import java.util.Random;
 
 
 public class Item {
-    String name;
     ItemType type;
 
     double value;
@@ -47,11 +46,26 @@ public class Item {
         this.realValue = Math.round(this.realValue * 100.0) / 100.0;
     }
 
+    public ItemType getType() {
+        return type;
+    }
+
+    public void setType(ItemType type) {
+        this.type = type;
+    }
+
+    public double getValue() {
+        return value;
+    }
+
+    public void setValue(double value) {
+        this.value = value;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
-                "name='" + name + '\'' +
-                ", type=" + type +
+                "type=" + type +
                 ", value=" + value +
                 ", realValue=" + realValue +
                 '}';
